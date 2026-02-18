@@ -1,0 +1,22 @@
+name: Enterprise CI-CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  docker:
+    needs: ci
+    uses: ./.github/workflows/docker.yml
+
+  deploy-dev:
+    needs: docker
+    uses: ./.github/workflows/deploy-dev.yml
+
+  deploy-prod:
+    needs: deploy-dev
+    uses: ./.github/workflows/deploy-prod.yml
+
